@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/185/trunk/kippo/dblog
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/116/trunk/kippo/dblog/__init__.py
+END
+xmpp.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/185/trunk/kippo/dblog/xmpp.py
+END
+mysql.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/173/trunk/kippo/dblog/mysql.py
+END

@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/222/trunk/kippo/commands
+END
+malware.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/204/trunk/kippo/commands/malware.py
+END
+fs.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/196/trunk/kippo/commands/fs.py
+END
+base.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/222/trunk/kippo/commands/base.py
+END
+ssh.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/222/trunk/kippo/commands/ssh.py
+END
+ping.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/183/trunk/kippo/commands/ping.py
+END
+ls.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/198/trunk/kippo/commands/ls.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/203/trunk/kippo/commands/__init__.py
+END
+last.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/150/trunk/kippo/commands/last.py
+END
+apt.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/95/trunk/kippo/commands/apt.py
+END
+dice.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/96/trunk/kippo/commands/dice.py
+END
+tar.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/203/trunk/kippo/commands/tar.py
+END
+wget.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/148/trunk/kippo/commands/wget.py
+END
+adduser.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/110/trunk/kippo/commands/adduser.py
+END

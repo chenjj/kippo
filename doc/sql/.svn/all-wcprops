@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/168/trunk/doc/sql
+END
+update2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/127/trunk/doc/sql/update2.sql
+END
+mysql.sql
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/168/trunk/doc/sql/mysql.sql
+END
+update3.sql
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/144/trunk/doc/sql/update3.sql
+END
+update4.sql
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/157/trunk/doc/sql/update4.sql
+END
+update5.sql
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/162/trunk/doc/sql/update5.sql
+END
+update6.sql
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/168/trunk/doc/sql/update6.sql
+END
