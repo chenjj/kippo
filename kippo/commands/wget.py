@@ -6,6 +6,7 @@ from kippo.core.fs import *
 from twisted.web import client
 from twisted.internet import reactor
 import stat, time, urlparse, random, re, exceptions
+import os, stat
 
 commands = {}
 
@@ -54,17 +55,19 @@ class command_wget(HoneyPotCommand):
 
         if '://' not in url:
             url = 'http://%s' % url
-
+        
         urldata = urlparse.urlparse(url)
 
         outfile = urldata.path.split('/')[-1]
         if not len(outfile.strip()) or not urldata.path.count('/'):
             outfile = 'index.html'
-
+        
         self.safeoutfile = '%s/%s_%s' % \
             (self.honeypot.env.cfg.get('honeypot', 'download_path'),
             time.strftime('%Y%m%d%H%M%S'),
             re.sub('[^A-Za-z0-9]', '_', url))
+        self.url=url
+        
         self.deferred = self.download(url, outfile,
             file(self.safeoutfile, 'wb'))
         if self.deferred:
@@ -91,11 +94,13 @@ class command_wget(HoneyPotCommand):
 
         factory = HTTPProgressDownloader(
             self, fakeoutfile, url, outputfile, *args, **kwargs)
+        
         out_addr = None
         if self.honeypot.env.cfg.has_option('honeypot', 'out_addr'):
             out_addr = (self.honeypot.env.cfg.get('honeypot', 'out_addr'), 0)
         self.connection = reactor.connectTCP(
             host, port, factory, bindAddress=out_addr)
+        print 'Wget malware: %s::::%s'%(self.safeoutfile,self.url)
         return factory.deferred
 
     def ctrl_c(self):

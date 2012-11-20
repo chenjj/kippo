@@ -35,6 +35,8 @@ class DBLogger(object):
                 self.handleTerminalSize),
             ('^Remote SSH version: (?P<version>.*)$',
                 self.handleClientVersion),
+            ('^Wget malware: (?P<malwarePath>.*)::::(?P<malwareUrl>.*)$',
+                self.handleWgetMalware),
             )]
         self.start(cfg)
 
@@ -137,5 +139,8 @@ class DBLogger(object):
     # args has: version
     def handleClientVersion(self, session, args):
         pass
-
+    
+    #args has: malwarePath, malwareHash
+    def handleWgetMalware(self, session, args):
+        pass
 # vim: set sw=4 et:
