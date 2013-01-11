@@ -24,7 +24,9 @@ if not os.path.exists('kippo.cfg'):
 
 from kippo.core import honeypot
 from kippo.core.config import config
+from setproctitle import setproctitle
 
+setproctitle('kippo')
 factory = honeypot.HoneyPotSSHFactory()
 factory.portal = portal.Portal(honeypot.HoneyPotRealm())
 

@@ -9,8 +9,11 @@ import socket
 import uuid
 import time
 import hashlib
+import thread
+import base64
 
 BUFSIZE = 16384
+PUBMAXSIZE = 5*(1024**2)
 
 OP_ERROR        = 0
 OP_INFO         = 1
@@ -18,7 +21,7 @@ OP_AUTH         = 2
 OP_PUBLISH      = 3
 OP_SUBSCRIBE    = 4
 
-MAXBUF = 1024**2
+MAXBUF = (1024**2)+PUBMAXSIZE
 SIZES = {
 	OP_ERROR: 5+MAXBUF,
 	OP_INFO: 5+256+20,
@@ -191,17 +194,21 @@ class hpclient(object):
 		if not self.filehandle:
 			self.sendfileheader(filepath)
 			self.sendfiledata()
-		else: self.sendfiles.append(filepath)
+			self.filehandle = None
+		else: 
+			self.sendfiles.append(filepath)
 
 	def sendfileheader(self, filepath):
 		self.filehandle = open(filepath, 'rb')
 		fsize = os.stat(filepath).st_size
+		if( fsize > PUBMAXSIZE):
+			fsize = PUBMAXSIZE
 		headc = strpack8(self.ident) + strpack8(UNIQUECHAN)
 		headh = struct.pack('!iB', 5+len(headc)+fsize, OP_PUBLISH)
 		self.send(headh + headc)
 
 	def sendfiledata(self):
-		tmp = self.filehandle.read(BUFSIZE)
+		tmp = self.filehandle.read(PUBMAXSIZE)
 		if not tmp:
 			if self.sendfiles:
 				fp = self.sendfiles.pop(0)
@@ -225,20 +232,44 @@ class DBLogger(dblog.DBLogger):
 
 		self.client = hpclient(server, port, ident, secret, debug)
 		self.meta = {}
+		self.malwarePath = []
 
 	# We have to return an unique ID
 	def createSession(self, peerIP, peerPort, hostIP, hostPort):
+		self.malwarePath = []
 		session = uuid.uuid4().hex
 		self.meta[session] = {'peerIP': peerIP, 'peerPort': peerPort, 
 		'hostIP': hostIP, 'hostPort': hostPort, 'loggedin': None,
 		'credentials':[], 'version': None, 'ttylog': None, 'command':[], 'malware':[], }
 		return session
-
+	def sendfile(self, malwarePath):
+		if os.path.exists(malwarePath):
+			#originfile = open(malwarePath,'rb')
+			#encodefilename =malwarePath.strip()+".hex"
+			#encodefile = open(encodefilename,'wb')
+			#encodefile.write( base64.b64encode(originfile.read().encode('hex')))
+			#originfile.close()
+			#encodefile.close()
+			self.client.sendfile(malwarePath)
+		else:
+			print malwarePath+"does not exists"
 	def handleConnectionLost(self, session, args):
 		log.msg('publishing metadata to hpfeeds')
 		meta = self.meta[session]
 		ttylog = self.ttylog(session)
 		if ttylog: meta['ttylog'] = ttylog.encode('hex')
+		if self.malwarePath:
+			for part in self.malwarePath:
+				malwarePath, malwareUrl = part[0], part[1]
+				f = file(malwarePath,'rb')
+				hashsha1 = hashlib.sha1()
+				hashsha1.update(f.read(PUBMAXSIZE))
+				malwareSha1 = hashsha1.hexdigest()
+				malwareMd5 = hashlib.md5(f.read(PUBMAXSIZE)).hexdigest()
+				self.meta[session]['malware'].append((malwareUrl,malwareSha1,malwareMd5))
+				f.close()
+				print "sending file %s"%malwarePath
+				thread.start_new_thread(self.sendfile,(malwarePath,))
 		self.client.publish(KIPPOCHAN, **meta)
 
 	def handleLoginFailed(self, session, args):
@@ -268,14 +299,8 @@ class DBLogger(dblog.DBLogger):
 		self.meta[session]['version'] = v
 	
 	def handleWgetMalware(self, session, args):
-	    malwarePath, malwareUrl = args['malwarePath'], args['malwareUrl']
-	    f = file(malwarePath,'rb')
-	    hash = hashlib.sha512()
-		hash.update(f.read(BUFSIZE)
-		malwareSha512 = hash.hexdigest()
-	    self.meta[session]['malware'].append((malwareUrl,malwareMd5))
-	    print "%s-%s"%(malwareUrl,malwareMd5)
-	    f.close()
-	    self.client.sendfile(malwarePath)
+		malwarePath, malwareUrl = args['malwarePath'], args['malwareUrl']
+		self.malwarePath.append((malwarePath,malwareUrl))
+		print "%s-%s"%(malwareUrl,malwarePath)
       
-# vim: set sw=4 et:
+# vim: set sw=4 :et:
